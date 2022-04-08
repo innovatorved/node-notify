@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.maincontainer[data-position^="top-"]{
+    top:0;
+}
+.maincontainer[data-position^="bottom-"]{
+    bottom:0;
+}
+.maincontainer[data-position$="-left"]{
+    left:0;
+}
+.maincontainer[data-position$="-right"]{
+    right:0;
+}
+.maincontainer[data-position$="-center"]{
+    margin-left: 0%;
+    left:50%;
+    transform:translateX(-50%);
+}
