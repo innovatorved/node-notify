@@ -19,3 +19,15 @@
     left:50%;
     transform:translateX(-50%);
 }
+
+.notify.progress::before{
+    content:"";
+    position: absolute;
+    height : 2px;
+    width: calc(100% * var(--progress));
+    background-color: blue;
+    bottom:0;
+    left:0;
+    right: 0;
+
+}

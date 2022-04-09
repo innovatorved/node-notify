@@ -1,6 +1,7 @@
 const DEFAULT_NOTIFY_OPTIONS = {
+    text: 'Demo Text',
     position: "bottom-right",
-    autoClose: false,
+    autoClose: 3000,
     onClose: () => { },
     canClose: true,
     showProgress: true
@@ -10,16 +11,33 @@ export default class Notify {
     #notifyELE
     #autoCloseTimeOut
     #removeBinded
+    #autoClose
+    #visibleSince
     constructor(options) {
         this.#notifyELE = document.createElement("div");
+        this.#visibleSince = new Date();
         this.#notifyELE.classList.add(
-            "main", "box-border", "p-3", "bg-white", "border-[1px]", "cursor-pointer", "border-solid", "rounded-lg", "border-[#333]", "relative", "after:absolute", "after:right-3", `${options.position == undefined || options.position?.endsWith("-right") ? "translate-x-[200%]" : options.position?.endsWith("-left") ? "translate-x-[-200%]" : options.position?.endsWith("top-center") ? "translate-y-[-110vh]" : "translate-y-[110vh]"}`, "transition-transform", "delay-[250ms]", "ease-in-out"
+            "notify", "box-border", "p-3", "bg-white", "border-[1px]", "cursor-pointer", "border-solid", "rounded-lg", "border-[#333]", "relative", "after:absolute", "after:right-3", `${options.position == undefined || options.position?.endsWith("-right") ? "translate-x-[200%]" : options.position?.endsWith("-left") ? "translate-x-[-200%]" : options.position?.endsWith("top-center") ? "translate-y-[-110vh]" : "translate-y-[110vh]"}`, "transition-transform", "delay-[250ms]", "ease-in-out","overflow-hidden"
         );
         requestAnimationFrame(() => {
             this.#notifyELE.classList.add("translate-y-[0]", "translate-x-[0]");
         }, 1000);
         this.#removeBinded = this.remove.bind(this);
         this.update({ ...DEFAULT_NOTIFY_OPTIONS, ...options })
+    }
+
+    set showProgress(value){
+        this.#notifyELE.classList.toggle("progress" , value);
+        this.#notifyELE.style.setProperty("--progress" , 1);
+        if(value){
+            setInterval(()=>{
+                const timeVisible = new Date() - this.#visibleSince;
+                this.#notifyELE.style.setProperty(
+                    "--progress" ,
+                    timeVisible / this.#autoClose
+                );
+            },10)
+        }
     }
 
     set position(value) {
@@ -36,6 +54,7 @@ export default class Notify {
     }
 
     set autoClose(value) {
+        this.#autoClose = value;
         if (value === false) return;
         if (this.#autoCloseTimeOut !== null) clearTimeout(this.#autoCloseTimeOut);
         this.#autoCloseTimeOut = setTimeout(() => { this.remove() }, value);
