@@ -1,6 +1,10 @@
 import Notify from './notify.js';
 
-const note1 = new Notify({
-    text: 'Warning',
-    autoClose: false,
+document.querySelector('button').addEventListener('click', () => {
+    const note1 = new Notify({
+        text: 'Warning',
+        position: 'bottom-right',
+        autoClose: false,
+    })
+   
 })
