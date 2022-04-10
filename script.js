@@ -1,4 +1,4 @@
-import Notify from './notify.js';
+import Notify from './index.js';
 
 document.querySelector('button').addEventListener('click', () => {
     const note1 = new Notify({

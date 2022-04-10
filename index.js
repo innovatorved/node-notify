@@ -22,6 +22,14 @@ export default class Notify {
   #showProgress;
   #text;
   #type;
+
+  init(){
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = "output.css";
+    document.getElementsByTagName("HEAD")[0].appendChild(link);
+  }
   constructor(options) {
     /**
          * const DEFAULT_NOTIFY_OPTIONS = {
@@ -129,7 +137,7 @@ export default class Notify {
 
   set canClose(value) {
     if (value) {
-      this.#notifyELE.classList.toggle('crosssymbolNotify', value);
+      this.#notifyELE.classList.toggle("crosssymbolNotify", value);
       this.#notifyELE.addEventListener("click", this.#removeBinded);
 
       const container = this.#notifyELE.parentElement;
@@ -218,3 +226,4 @@ const createContainer = (value) => {
   document.body.append(container);
   return container;
 };
+
